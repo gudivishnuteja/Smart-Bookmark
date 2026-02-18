@@ -32,10 +32,13 @@ export default function Home() {
   }
 
   const login = async () => {
+    const redirectUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}/dashboard`
+      : 'http://localhost:3000/dashboard'
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: "http://localhost:3000/dashboard"
+        redirectTo: redirectUrl
       }
     })
   }
