@@ -29,18 +29,28 @@ export default function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    checkUser()
+    // Wait for Supabase to process OAuth callback (hash with access_token)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session) {
+          setUser(session.user)
+        } else if (event === 'INITIAL_SESSION' || event === 'SIGNED_OUT') {
+          // Don't redirect if URL has OAuth tokens (Supabase still processing)
+          const hasAuthHash = typeof window !== 'undefined' &&
+            /[#&](access_token|refresh_token)=/.test(window.location.hash)
+          if (hasAuthHash) return
+
+          const { data } = await supabase.auth.getSession()
+          if (!data.session) window.location.href = "/"
+        }
+      }
+    )
+    return () => subscription.unsubscribe()
   }, [])
 
   useEffect(() => {
     if (user) fetchBookmarks()
   }, [user])
-
-  async function checkUser() {
-    const { data } = await supabase.auth.getUser()
-    if (!data.user) window.location.href = "/"
-    else setUser(data.user)
-  }
 
   async function fetchBookmarks() {
     const { data } = await supabase
