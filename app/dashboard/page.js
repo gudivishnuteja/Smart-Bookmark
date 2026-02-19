@@ -267,11 +267,11 @@ export default function Dashboard() {
         {/* Sidebar - desktop always visible, mobile as drawer */}
         <aside
           className={`
-            fixed md:relative inset-y-0 left-0 z-50 w-64 max-w-[85vw] md:w-56
-            border-r border-white/10 py-6 px-4 bg-[#1a1a2e]
+            fixed md:relative inset-y-0 left-0 z-50 w-full sm:w-72 md:w-56 max-w-sm md:max-w-none
+            border-r border-white/10 py-6 px-5 bg-[#1a1a2e]
             transform transition-transform duration-200 ease-out
             md:transform-none md:flex-shrink-0
-            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+            ${sidebarOpen ? 'translate-x-0 shadow-2xl md:shadow-none' : '-translate-x-full md:translate-x-0'}
           `}
         >
           <div className="flex items-center justify-between mb-4 md:mb-4">
