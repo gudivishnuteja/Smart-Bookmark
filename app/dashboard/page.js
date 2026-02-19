@@ -209,12 +209,16 @@ export default function Dashboard() {
                 </button>
                 {menuOpen && (
                   <>
-                    <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
-                    <div className="absolute right-0 top-full mt-1 py-2 w-48 bg-[#252538] border border-white/10 rounded-lg shadow-xl z-50">
+                    <div className="fixed inset-0 z-[100]" onClick={() => setMenuOpen(false)} aria-hidden="true" />
+                    <div className="absolute right-0 top-full mt-1 py-2 w-52 bg-[#252538] border border-white/10 rounded-lg shadow-xl z-[110]">
                       <button
-                        onClick={() => { logout(); setMenuOpen(false) }}
-                        className="w-full px-4 py-2.5 text-left text-sm text-red-400 hover:bg-white/5 touch-manipulation"
+                        type="button"
+                        onClick={() => { setMenuOpen(false); logout() }}
+                        className="w-full px-4 py-3 min-h-[48px] text-left text-base font-medium text-red-400 hover:bg-white/10 active:bg-white/15 rounded-lg touch-manipulation flex items-center gap-3"
                       >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+                        </svg>
                         Logout
                       </button>
                     </div>
