@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editingBookmark, setEditingBookmark] = useState(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     // Wait for Supabase to process OAuth callback (hash with access_token)
@@ -147,56 +148,60 @@ export default function Dashboard() {
     window.open(bookmark.url, '_blank')
   }
 
+  const selectFolder = (id) => {
+    setSelectedFolder(id)
+    setSidebarOpen(false)
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#1a1a2e] text-white">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Header */}
-      <header className="border-b border-white/10 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Smart Bookmarks App</h1>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setAddModalOpen(true)}
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition"
-            >
-              Add New Bookmark
-            </button>
-            <button
-              onClick={exportExcel}
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg font-medium transition"
-            >
-              Export
-            </button>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+      <header className="border-b border-white/10 px-3 sm:px-6 py-3 sm:py-4 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center justify-between gap-2 min-w-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="md:hidden p-2 -ml-2 rounded-lg hover:bg-white/5 transition touch-manipulation"
+                aria-label="Open menu"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                 </svg>
-              </span>
-              <input
-                placeholder="Search bookmarks..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-2 w-64 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 outline-none focus:border-blue-500/50"
-              />
+              </button>
+              <h1 className="text-base sm:text-xl font-semibold truncate">Smart Bookmarks</h1>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <button
+                onClick={() => setAddModalOpen(true)}
+                className="md:hidden p-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition touch-manipulation"
+                aria-label="Add bookmark"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden flex-shrink-0">
                 {user?.user_metadata?.avatar_url ? (
-                  <img
-                    src={user.user_metadata.avatar_url}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-sm font-medium">
-                    {user?.user_metadata?.full_name?.[0] || 'U'}
-                  </span>
+                  <span className="text-sm font-medium">{user?.user_metadata?.full_name?.[0] || 'U'}</span>
                 )}
               </div>
               <div className="relative">
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="p-2 rounded-lg hover:bg-white/5 transition"
+                  className="p-2 rounded-lg hover:bg-white/5 transition touch-manipulation"
+                  aria-label="Account menu"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
@@ -208,7 +213,7 @@ export default function Dashboard() {
                     <div className="absolute right-0 top-full mt-1 py-2 w-48 bg-[#252538] border border-white/10 rounded-lg shadow-xl z-50">
                       <button
                         onClick={() => { logout(); setMenuOpen(false) }}
-                        className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-white/5"
+                        className="w-full px-4 py-2.5 text-left text-sm text-red-400 hover:bg-white/5 touch-manipulation"
                       >
                         Logout
                       </button>
@@ -218,19 +223,75 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={() => setAddModalOpen(true)}
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition"
+              >
+                Add New Bookmark
+              </button>
+              <button
+                onClick={exportExcel}
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg font-medium transition"
+              >
+                Export
+              </button>
+            </div>
+            <div className="relative flex-1 min-w-0 max-w-full md:max-w-xs">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+              </span>
+              <input
+                placeholder="Search bookmarks..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 md:py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 outline-none focus:border-blue-500/50 text-base"
+              />
+            </div>
+            <div className="flex md:hidden items-center gap-2">
+              <button
+                onClick={exportExcel}
+                className="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg text-sm font-medium transition touch-manipulation"
+              >
+                Export
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <aside className="w-56 border-r border-white/10 py-6 px-4">
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Folders</h2>
+      <div className="flex flex-1 min-h-0">
+        {/* Sidebar - desktop always visible, mobile as drawer */}
+        <aside
+          className={`
+            fixed md:relative inset-y-0 left-0 z-50 w-64 max-w-[85vw] md:w-56
+            border-r border-white/10 py-6 px-4 bg-[#1a1a2e]
+            transform transition-transform duration-200 ease-out
+            md:transform-none md:flex-shrink-0
+            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          `}
+        >
+          <div className="flex items-center justify-between mb-4 md:mb-4">
+            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Folders</h2>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden p-2 rounded-lg hover:bg-white/5 text-gray-400"
+              aria-label="Close menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
           <nav className="space-y-1">
             {FOLDERS.map((folder) => (
               <button
                 key={folder.id}
-                onClick={() => setSelectedFolder(folder.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition ${
+                onClick={() => selectFolder(folder.id)}
+                className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition touch-manipulation ${
                   selectedFolder === folder.id
                     ? 'bg-white/10 text-white'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
@@ -270,15 +331,15 @@ export default function Dashboard() {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-8 overflow-auto">
-          <div className="flex items-center justify-between mb-6">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto min-w-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <h2 className="text-lg font-semibold">
               List Bookmarks
             </h2>
             <SortDropdown value={sort} onChange={setSort} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
             {filtered.map((bookmark) => (
               <BookmarkCard
                 key={bookmark.id}

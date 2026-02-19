@@ -27,7 +27,7 @@ export default function CategoryDropdown({ value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full px-3 py-2 bg-gray-800 border border-white/20 rounded text-white flex justify-between items-center"
+        className="w-full px-3 py-2.5 min-h-[44px] bg-gray-800 border border-white/20 rounded-lg text-white flex justify-between items-center touch-manipulation"
       >
         {value}
         <span className={`transition-transform ${open ? "rotate-180" : ""}`}>
@@ -46,7 +46,7 @@ export default function CategoryDropdown({ value, onChange }) {
                 onChange(cat)
                 setOpen(false)
               }}
-              className="px-3 py-2 hover:bg-gray-700 cursor-pointer text-white transition"
+              className="px-3 py-2.5 min-h-[44px] flex items-center hover:bg-gray-700 cursor-pointer text-white transition touch-manipulation"
             >
               {cat}
             </div>

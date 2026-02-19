@@ -27,11 +27,11 @@ export default function SortDropdown({ value, onChange }) {
   }, [])
 
   return (
-    <div ref={dropdownRef} className="relative w-44 text-sm z-[9999]">
+    <div ref={dropdownRef} className="relative w-full sm:w-44 text-sm z-[9999] min-w-0">
 
       <button
         onClick={() => setOpen(!open)}
-        className="w-full px-4 py-2 rounded-lg 
+        className="w-full px-4 py-2.5 min-h-[44px] rounded-lg touch-manipulation 
                    bg-black/50 backdrop-blur-md 
                    border border-cyan-400/40 
                    text-white flex justify-between items-center

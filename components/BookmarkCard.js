@@ -37,7 +37,7 @@ export default function BookmarkCard({ bookmark, onDelete, onEdit, onClick }) {
   return (
     <div
       onClick={() => onClick?.(bookmark)}
-      className="group relative w-[350px] max-w-full bg-white rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer flex items-center gap-4"
+      className="group relative w-full min-w-0 bg-white rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 cursor-pointer flex items-center gap-4 touch-manipulation"
     >
       <div className="absolute top-3 right-3 flex flex-col gap-1 z-10">
         <button

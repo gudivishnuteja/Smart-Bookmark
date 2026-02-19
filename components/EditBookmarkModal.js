@@ -36,12 +36,12 @@ export default function EditBookmarkModal({ open, onClose, bookmark, onUpdate })
   if (!open || !bookmark) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm min-h-full"
         onClick={onClose}
       />
-      <div className="relative bg-[#1e1e2e] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+      <div className="relative bg-[#1e1e2e] border border-white/10 rounded-2xl p-5 sm:p-6 w-full max-w-md shadow-2xl my-auto max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4 text-white">Edit Bookmark</h2>
 
         <div className="space-y-4">

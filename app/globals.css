@@ -1,8 +1,21 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   font-family: ui-sans-serif, system-ui;
+}
+
+/* Improve touch targets and prevent zoom on inputs on iOS */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+@media (max-width: 640px) {
+  input, select, textarea, button {
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
 }
