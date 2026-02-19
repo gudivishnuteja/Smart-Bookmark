@@ -62,9 +62,16 @@ export default function Dashboard() {
     setBookmarks(data || [])
   }
 
-  async function logout() {
-    await supabase.auth.signOut()
-    window.location.href = "/"
+  function logout() {
+    setMenuOpen(false)
+    let didRedirect = false
+    const goHome = () => {
+      if (didRedirect) return
+      didRedirect = true
+      window.location.href = "/"
+    }
+    supabase.auth.signOut().then(goHome).catch(goHome)
+    setTimeout(goHome, 2000)
   }
 
   async function addBookmark(newBookmark) {
@@ -213,7 +220,7 @@ export default function Dashboard() {
                     <div className="absolute right-0 top-full mt-1 py-2 w-52 bg-[#252538] border border-white/10 rounded-lg shadow-xl z-[110]">
                       <button
                         type="button"
-                        onClick={() => { setMenuOpen(false); logout() }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); logout() }}
                         className="w-full px-4 py-3 min-h-[48px] text-left text-base font-medium text-red-400 hover:bg-white/10 active:bg-white/15 rounded-lg touch-manipulation flex items-center gap-3"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
