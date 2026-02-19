@@ -330,8 +330,14 @@ export default function Dashboard() {
           </nav>
         </aside>
 
-        {/* Main content */}
-        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto min-w-0">
+        {/* Main content - hidden when mobile sidebar is open so Sort doesn't appear inside drawer */}
+        <main
+          className={`
+            flex-1 p-4 sm:p-6 md:p-8 overflow-auto min-w-0
+            md:block
+            ${sidebarOpen ? 'hidden md:block' : 'block'}
+          `}
+        >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <h2 className="text-lg font-semibold">
               List Bookmarks
